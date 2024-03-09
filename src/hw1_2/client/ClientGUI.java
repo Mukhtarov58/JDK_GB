@@ -86,8 +86,8 @@ public class ClientGUI extends JFrame implements ClientView{
     /**
      * Метод, срабатывающий при нажатии кнопки авторизации
      */
-    public void login(){
-        if (clientController.connectToServer(tfLogin.getText())){
+    public void login(String name){
+        if (clientController.connectToServer(name)){
             headerPanel.setVisible(false);
         }
     }
@@ -123,7 +123,7 @@ public class ClientGUI extends JFrame implements ClientView{
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                login();
+                login(tfLogin.getText());
             }
         });
 

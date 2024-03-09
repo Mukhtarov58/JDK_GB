@@ -28,9 +28,6 @@ public class ServerController implements ServerControllerInt {
         this.clientGUIList = new ArrayList<>();
     }
 
-    public ServerController() {
-    }
-
     @Override
     public void startServer() {
         if (work) {
