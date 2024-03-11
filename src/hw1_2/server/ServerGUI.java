@@ -1,29 +1,22 @@
 package hw1_2.server;
 
-import hw1_2.client.ClientGUI;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServerGUI extends JFrame implements ServerView {
     public static final int WIDTH = 400;
     public static final int HEIGHT = 300;
     public static final String LOG_PATH = "src/server/log.txt";
 
-    List<ClientGUI> clientGUIList;
-
+    private ServerController serverController;
     JButton btnStart, btnStop;
     JTextArea log;
     boolean work;
-    private ServerController serverController;
+
 
     public ServerGUI() {
-        clientGUIList = new ArrayList<>();
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
         setResizable(false);
@@ -54,6 +47,7 @@ public class ServerGUI extends JFrame implements ServerView {
         add(createButtons(), BorderLayout.SOUTH);
     }
 
+
     private Component createButtons() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
         btnStart = new JButton("Start");
@@ -62,27 +56,14 @@ public class ServerGUI extends JFrame implements ServerView {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (work) {
-                    appendLog("Сервер уже был запущен");
-                } else {
-                    work = true;
-                    appendLog("Сервер запущен!");
-                }
+                serverController.startServer();
             }
         });
 
         btnStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!work) {
-                    appendLog("Сервер уже был остановлен");
-                } else {
-                    work = false;
-                    while (!clientGUIList.isEmpty()) {
-                        serverController.disconnectUser(clientGUIList.get(clientGUIList.size() - 1));
-                    }
-                    appendLog("Сервер остановлен!");
-                }
+                serverController.stopServer();
             }
         });
 

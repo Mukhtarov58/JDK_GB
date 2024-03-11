@@ -1,12 +1,12 @@
 package hw1_2.server;
 
-import hw1_2.client.ClientGUI;
+import hw1_2.client.ClientController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerController implements ServerControllerInt {
-    private List<ClientGUI> clientGUIList;
+    private List<ClientController> clientControllerList;
     private boolean work;
 
     private ServerView serverView;
@@ -25,7 +25,7 @@ public class ServerController implements ServerControllerInt {
     public ServerController(ServerView serverView, Repository repository) {
         this.serverView = serverView;
         this.repository = repository;
-        this.clientGUIList = new ArrayList<>();
+        this.clientControllerList = new ArrayList<>();
     }
 
     @Override
@@ -44,27 +44,30 @@ public class ServerController implements ServerControllerInt {
             serverView.appendLog("Сервер уже был остановлен");
         } else {
             work = false;
-            while (!clientGUIList.isEmpty()) {
-                disconnectUser(clientGUIList.get(clientGUIList.size() - 1));
+            while (!clientControllerList.isEmpty()) {
+                disconnectUser(clientControllerList.get(clientControllerList.size() - 1));
             }
             serverView.appendLog("Сервер остановлен!");
         }
     }
 
+
+
     @Override
-    public boolean connectUser(ClientGUI clientGUI){
+    public boolean connectUser(ClientController clientController){
         if (!work){
             return false;
         }
-        clientGUIList.add(clientGUI);
+        clientControllerList.add(clientController);
         return true;
     }
 
+
     @Override
-    public void disconnectUser(ClientGUI clientGUI) {
-        clientGUIList.remove(clientGUI);
-        if (clientGUI != null) {
-            clientGUI.disconnectedFromServer();
+    public void disconnectUser(ClientController clientController) {
+        clientControllerList.remove(clientController);
+        if (clientController != null) {
+            clientController.disconnectedFromServer();
             serverView.appendLog("Пользователь отключен");
         }
     }
@@ -83,8 +86,8 @@ public class ServerController implements ServerControllerInt {
 
 
     private void answerAll(String text) {
-        for (ClientGUI clientGUI : clientGUIList) {
-            clientGUI.answer(text);
+        for (ClientController clientController : clientControllerList){
+            clientController.answerFromServer(text);
         }
     }
 

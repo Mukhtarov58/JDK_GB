@@ -8,7 +8,7 @@ import hw1_2.server.ServerController;
  * @clientView абстракция графического интерфейса
  * @server объект для связи с сервером
  */
-public class ClientController extends ClientGUI {
+public class ClientController{
     private boolean connected;
     private String name;
     private ClientView clientView;
